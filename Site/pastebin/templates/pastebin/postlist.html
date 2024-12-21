@@ -1,0 +1,57 @@
+{% extends 'pastebin/base.html' %}
+
+{% block content %}
+    <title>Список постов</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .post-card {
+            margin-bottom: 20px;
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .post-card h2 {
+            font-size: 1.5rem;
+            color: #343a40;
+        }
+        .post-card p {
+            color: #6c757d;
+        }
+        .post-card small {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        .post-card a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .post-card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<div class="container mt-5">
+    <h1 class="mb-4">Список сниппетов</h1>
+    
+    {% if posts %}
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-md-12">
+                    <div class="post-card">
+                        <pre>{{ post.content }}</pre>
+                        <button type="button" class="btn btn-info"><a href="{{ post.get_absolute_url.view }}">Раскрыть сниппет</a></button>
+                        <button type="button" class="btn btn-danger"><a href="{{ post.get_absolute_url.delete }}">Удалить</a></button>
+                        <button type="button" class="btn btn-warning"><a href="{{ post.get_absolute_url.change }}">Изменить</a></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Сниппетов пока нет.</p>
+    {% endif %}
+</div>
+{% endblock %}

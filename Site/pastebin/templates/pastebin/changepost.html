@@ -1,0 +1,26 @@
+{% extends 'pastebin/base.html' %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <!-- {{ form.as_p }} -->
+    <div class="container container2 mt-5">
+        <div class="block2">
+          <form method="POST">
+              <h1 style="color: black;">Изменение сниппета</h1>
+              <div class="form-group">
+                  <label for="exampleFormControlTextarea1" style="color: black;">Код</label>
+                  <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ content }}</textarea>
+              </div>
+              <div class="form-group mt-2">
+                  <h4 style="color: black; font-size: 2.5vh;">Пароль</h1>
+                  <h4 style="color: black; font-size: 2.5vh;">(При отсутсвии пароля оставьте поле пустым)</h1>
+                  <!-- <label for="exampleInputPassword1">Пароль</label> -->
+                  <input value="{{ password }}" name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <button type="submit" class="btn btn-warning mt-2">Изменить</button>
+            </form>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'pastebin/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .post-header {
+        background-color: #007bff;
+        color: white;
+        padding: 30px 15px;
+        text-align: center;
+    }
+
+    .post-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .post-content {
+        margin: 30px 0;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .post-footer {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .back-link {
+        font-size: 1.1rem;
+        color: #007bff;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+    .post-meta {
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+
+    .post-content p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .post-meta span {
+        margin-right: 15px;
+    }
+</style>
+
+{% if my_user or not havepassword %}
+<div class="container">
+    <div class="mt-2" style="text-align: center;"><h1>Сниппет</h1></div>
+    <div class="post-content">
+        <pre>{{ post.content }}</pre>
+    </div>
+</div>
+{% else %}
+
+<div id="tmp" class="container">
+    <div class="form-group mt-2">
+        <label for="exampleInputPassword1">Введите пароль от сниппета</label>
+        <input type="password" class="form-control" id="password" placeholder="Password">
+      </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+      console.log("asdflkas")
+        $('#password').keyup(function () {
+            const post_id = "{{ post.id }}"
+            const input_text = document.getElementById("password").value
+            console.log(input_text)
+            $.ajax({
+                data: {'post_id' : post_id, 'password' : input_text},
+                url: "{% url 'checkpassword' %}",
+                success: function (response) {
+                  console.log(response.correct)
+                    if (response.correct) {
+                        if (!document.getElementById('usernameError')) {
+                          $('#tmp').after('<div id="snippet" class="container"><div class="mt-2" style="text-align: center;"><h1>Сниппет</h1></div><div class="post-content"><pre>{{ post.content }}</pre></div></div>')
+                          $('#tmp').remove();
+                        }
+                    }
+                    else {
+                        $('#snippet').remove();
+                    }
+                },
+                error: function (response) {
+                    console.log(response.responseJSON.errors)
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{% endif %}
+
+{% endblock %}
